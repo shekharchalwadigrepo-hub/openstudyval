@@ -1,3 +1,8 @@
+# openstudyval 0.1.1
+
+* Switched `inst/CITATION` from `citEntry()` to `bibentry()`.
+* Added `inst/WORDLIST` for CDISC and FDA terms used in DESCRIPTION.
+
 # openstudyval 0.1.0
 
 * Initial CRAN-candidate release.

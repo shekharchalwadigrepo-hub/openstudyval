@@ -1,8 +1,8 @@
 Package: openstudyval
 Type: Package
 Title: Open Validator for FDA Study-Data Submissions
-Version: 0.1.0
-Authors@R: person(given = "Shekhar", family = "Chalwadi",
+Version: 0.1.1
+Authors@R: person(given = "Shekhar Eranna", family = "Chalwadi",
                   email = "skrchalwadicg@gmail.com",
                   role = c("aut", "cre"))
 Description: Validates clinical and nonclinical study-data packages against
@@ -31,4 +31,3 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-LazyData: true
