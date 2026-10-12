@@ -1,0 +1,32 @@
+rule_id,publisher,standard,domains,severity,check,argument,message,guidance
+SDTM020,CDISC-SDTM,SDTM,DM|AE|EX|LB|CM|DS|VS|MH|SV,Error,variable_required,STUDYID|DOMAIN|USUBJID,Required identifier variables are missing.,SDTM general observation and DM identifiers
+SDTM021,CDISC-SDTM,SDTM,DM,Error,key_unique,STUDYID|USUBJID,DM key STUDYID+USUBJID is not unique.,One demographics record per subject
+SDTM022,CDISC-SDTM,SDTM,DM,Error,codelist,SEX=M|F|U,SEX is not in the core controlled terminology.,CDISC SEX codelist; extend via the ct argument
+SDTM024,CDISC-SDTM,SDTM,AE,Error,codelist,AESER=Y|N,AESER must be Y or N when populated.,CDISC NY codelist
+SDTM025,CDISC-SDTM,SDTM,AE,Error,codelist,AESEV=MILD|MODERATE|SEVERE,AESEV is not MILD / MODERATE / SEVERE.,CDISC AESEV
+SDTM026,CDISC-SDTM,SDTM,AE,Error,codelist,AEACN=DOSE NOT CHANGED|DOSE REDUCED|DRUG INTERRUPTED|DRUG WITHDRAWN|NOT APPLICABLE,AEACN is outside the core action codelist.,CDISC AEACN
+SDTM027,CDISC-SDTM,SDTM,AE,Error,nonmissing,AETERM|AESTDTC,Required adverse-event text or start date is missing.,SDTM AE
+SDTM028,CDISC-SDTM,SDTM,EX,Error,nonmissing,EXTRT|EXSTDTC,Required exposure treatment or start date is missing.,SDTM EX
+SDTM029,CDISC-SDTM,SDTM,DS,Warning,nonmissing,DSDECOD|DSSTDTC,Disposition term or start date is missing.,SDTM DS
+SDTM030,CDISC-SDTM,SDTM,LB,Error,one_to_one,LBTESTCD|LBTEST,LBTESTCD and LBTEST are not a one-to-one pair.,Public FDA business-rule intent FDAB009
+SDTM031,CDISC-SDTM,SDTM,VS,Error,one_to_one,VSTESTCD|VSTEST,VSTESTCD and VSTEST are not a one-to-one pair.,Public FDA business-rule intent FDAB009
+SDTM032,CDISC-SDTM,SDTM,CM,Error,one_to_one,CMTRT|CMDECOD,CMTRT and CMDECOD should be reviewed when the pair is not stable.,Paired topic variables
+SDTM033,CDISC-SDTM,SDTM,*,Warning,iso8601,DTC,Date/time variable is not a complete or partial ISO 8601 value.,SDTM --DTC
+SDTM034,CDISC-SDTM,SDTM,DM,Warning,regex,COUNTRY=^[A-Z]{3}$,COUNTRY is not a 3-letter code.,ISO 3166 alpha-3
+SDTM035,CDISC-SDTM,SDTM,AE|CM|LB|EX|DS|VS,Error,variable_required,STUDYID,STUDYID is required on submitted domains.,FDA TCG
+SDTM036,CDISC-SDTM,SDTM,SUPP*,Warning,variable_required,STUDYID|RDOMAIN|USUBJID|IDVAR|IDVARVAL|QNAM|QLABEL|QVAL,SUPP-- qualifier structure is incomplete.,SDTM SUPPQUAL
+SDTM037,CDISC-SDTM,SDTM,TS,Error,variable_required,STUDYID|TSPARMCD|TSVAL,TS is missing required columns.,SDTM TS
+SDTM038,CDISC-SDTM,SDTM,AE,Warning,codelist,AEOUT=RECOVERED/RESOLVED|RECOVERING/RESOLVING|NOT RECOVERED/NOT RESOLVED|RECOVERED/RESOLVED WITH SEQUELAE|FATAL|UNKNOWN,AEOUT is outside the core outcome codelist.,CDISC OUT
+SEND020,CDISC-SEND,SEND,DM,Error,variable_required,STUDYID|DOMAIN|USUBJID,SEND DM is missing required identifiers.,SENDIG
+SEND021,CDISC-SEND,SEND,DM,Error,key_unique,STUDYID|USUBJID,SEND DM key is not unique.,SENDIG
+SEND022,CDISC-SEND,SEND,*,Warning,iso8601,DTC,Date/time variable is not ISO 8601.,SENDIG
+SEND023,CDISC-SEND,SEND,TS,Error,variable_required,STUDYID|TSPARMCD|TSVAL,SEND TS is missing required columns.,SENDIG
+ADAM020,CDISC-ADAM,ADaM,ADSL,Error,variable_required,STUDYID|USUBJID,ADSL is missing STUDYID or USUBJID.,ADaMIG
+ADAM021,CDISC-ADAM,ADaM,ADSL,Error,codelist,SAFFL=Y|N,SAFFL must be Y or N when populated.,ADaM population flag
+ADAM022,CDISC-ADAM,ADaM,ADSL,Error,codelist,ITTFL=Y|N,ITTFL must be Y or N when populated.,ADaM population flag
+ADAM023,CDISC-ADAM,ADaM,ADSL,Error,codelist,EFFFL=Y|N,EFFFL must be Y or N when populated.,ADaM population flag
+ADAM024,CDISC-ADAM,ADaM,AD*,Error,variable_required,STUDYID|USUBJID,Analysis dataset is missing STUDYID or USUBJID.,ADaMIG
+ADAM025,CDISC-ADAM,ADaM,ADAE|ADLB|ADVS|ADTTE,Error,one_to_one,PARAMCD|PARAM,PARAMCD and PARAM are not one-to-one.,ADaMIG / FDA FDAB009 intent
+ADAM026,CDISC-ADAM,ADaM,ADAE|ADLB|ADVS|ADTTE,Error,regex,PARAMCD=^[A-Z][A-Z0-9_]{0,7}$,PARAMCD is not 1-8 characters starting with a letter.,ADaMIG
+ADAM027,CDISC-ADAM,ADaM,ADSL,Warning,nonmissing,TRTSDT|TRTEDT,Treatment start or end date is missing on ADSL.,ADaMIG when subject was treated
+ADAM028,CDISC-ADAM,ADaM,ADTTE,Warning,variable_required,PARAMCD|AVAL|CNSR,Time-to-event dataset is missing PARAMCD AVAL or CNSR.,ADaMIG basic data structure / TTE

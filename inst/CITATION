@@ -1,0 +1,16 @@
+citHeader("To cite openstudyval in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "openstudyval: Open Validator for FDA Study-Data Submissions",
+  author = person(given = "Shekhar Eranna", family = "Chalwadi"),
+  year = "2026",
+  note = "R package version 0.1.0",
+  url = "https://github.com/shekharchalwadigrepo-hub/openstudyval",
+  textVersion = paste(
+    "Chalwadi S (2026).",
+    "openstudyval: Open Validator for FDA Study-Data Submissions.",
+    "R package version 0.1.0.",
+    "https://github.com/shekharchalwadigrepo-hub/openstudyval"
+  )
+)

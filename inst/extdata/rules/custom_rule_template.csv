@@ -1,0 +1,2 @@
+rule_id,publisher,standard,domains,severity,check,argument,message,guidance
+CUST_ARM,sponsor,SDTM,DM,Error,codelist,ARMCD=A|B|SCRNFAIL,ARMCD is not in the study arm list.,Protocol section 6

@@ -1,0 +1,34 @@
+Package: openstudyval
+Type: Package
+Title: Open Validator for FDA Study-Data Submissions
+Version: 0.1.0
+Authors@R: person(given = "Shekhar", family = "Chalwadi",
+                  email = "skrchalwadicg@gmail.com",
+                  role = c("aut", "cre"))
+Description: Validates clinical and nonclinical study-data packages against
+    publicly described FDA technical-rejection criteria, SAS XPORT constraints
+    from the Study Data Technical Conformance Guide, and an extensible catalog
+    of SDTM, SEND, and ADaM structural conformance checks. Reads a study folder
+    of CSV, RDS, or (when the suggested package haven is installed) SAS v5/v8
+    transport files, optionally checks define.xml, and writes a submission-style
+    HTML and CSV validation report. This package is an independent open-source
+    implementation. It is not affiliated with, endorsed by, or a copy of
+    Pinnacle 21, Certara, or the FDA.
+License: MIT + file LICENSE
+URL: https://github.com/shekharchalwadigrepo-hub/openstudyval
+BugReports: https://github.com/shekharchalwadigrepo-hub/openstudyval/issues
+Encoding: UTF-8
+Language: en-US
+Depends: R (>= 4.1.0)
+Imports: stats, tools, utils
+Suggests:
+    haven,
+    xml2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
+NeedsCompilation: no
+LazyData: true

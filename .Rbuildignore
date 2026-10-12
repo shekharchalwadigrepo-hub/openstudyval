@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.github$
+^README\.md$
+^CONTRIBUTING\.md$
+^cran-comments\.md$
+^data-raw$
+^\.gitignore$
+^docs$
+^pkgdown$
+^LICENSE\.md$
+^PUBLISH\.md$
+^validation-report\.(html|csv)$
