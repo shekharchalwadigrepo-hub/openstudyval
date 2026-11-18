@@ -1,62 +1,56 @@
 ---
-title: "Validating an FDA study-data package"
+title: "Validating Study Data with openstudyval"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Validating an FDA study-data package}
+  %\VignetteIndexEntry{Validating Study Data with openstudyval}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
-# What this package is
+# Validating Study Data with openstudyval
 
-`openstudyval` is an independent R validator for a study-data folder prepared
-for an FDA submission. It covers:
+This vignette shows how to use the enhanced openstudyval package.
 
-- SAS v5 transport constraints from the FDA Study Data Technical Conformance Guide
-  (8-character names, 40-character labels, 200-character values)
-- eCTD technical-rejection criteria 1734, 1735, 1736, and 1738 where they can
-  be evaluated from the study folder
-- structural SDTM, SEND, and ADaM checks, plus a CSV rule catalog you can extend
-
-It is not Pinnacle 21, and a clean report is not an FDA certification.
-
-# Run the bundled example
+## Basic Validation
 
 ```{r}
 library(openstudyval)
+
 report <- validate_submission(example_study("sdtm"), standard = "SDTM")
 summary(report)
 ```
 
-Write the HTML report next to your study:
+## Using a YAML Configuration
 
-```{r, eval = FALSE}
-write_validation_report(report, "validation-report.html")
+Create a file `config.yaml`:
+
+```yaml
+standard: SDTM
+standard_version: "3.3"
+severity: ["Reject", "Error"]
 ```
 
-# Add a study-specific rule
+Then run:
 
-```{r}
-extra <- data.frame(
-  rule_id = "CUST_ARM",
-  publisher = "sponsor",
-  standard = "SDTM",
-  domains = "DM",
-  severity = "Error",
-  check = "codelist",
-  argument = "ARMCD=A|B",
-  message = "ARMCD is not in the study arm codelist.",
-  guidance = "Protocol section 6",
-  stringsAsFactors = FALSE
-)
-study <- read_study_data(example_study("sdtm"))
-custom <- validate_datasets(study, standard = "SDTM", rules = extra)
-"CUST_ARM" %in% custom$issues$rule_id
+```{r eval=FALSE}
+report <- validate_from_config("path/to/your/study", "config.yaml")
 ```
 
-Full MedDRA and WHODrug dictionaries are licensed and are not bundled. Pass
-permitted terms in `ct` or as the right-hand side of a `codelist` rule.
+## Exporting Reports
+
+```{r eval=FALSE}
+write_validation_report(report, "validation.html")
+write_validation_report(report, "validation.xlsx", format = "excel")
+```
+
+## Important Note
+
+openstudyval is an independent open-source tool for early checks.  
+It is **not** a replacement for Pinnacle 21 Enterprise or other commercial validators used for formal regulatory submissions.

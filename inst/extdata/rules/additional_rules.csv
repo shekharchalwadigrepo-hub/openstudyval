@@ -1,0 +1,24 @@
+rule_id,publisher,standard,domains,severity,check,argument,message,guidance
+SDTM030,openstudyval,SDTM,DM,Error,variable_required,AGE|AGEU|SEX|RACE|ARM|ARMCD,Required demographic variables missing in DM.,SDTMIG DM domain
+SDTM031,openstudyval,SDTM,DM,Warning,codelist,SEX=M|F|U,SEX is not in the CDISC SEX codelist.,CDISC controlled terminology
+SDTM032,openstudyval,SDTM,DM,Warning,codelist,RACE=ASIAN|BLACK OR AFRICAN AMERICAN|WHITE|OTHER|NOT REPORTED|UNKNOWN,RACE is not in the expected CDISC values.,CDISC controlled terminology
+SDTM033,openstudyval,SDTM,AE,Error,variable_required,AETERM|AEDECOD|AESEV|AESER,Required AE variables missing.,SDTMIG AE domain
+SDTM034,openstudyval,SDTM,AE,Warning,codelist,AESEV=MILD|MODERATE|SEVERE,AESEV is not in the expected severity codelist.,CDISC controlled terminology
+SDTM035,openstudyval,SDTM,AE,Warning,codelist,AESER=Y|N,AESER is not Y or N.,CDISC controlled terminology
+SDTM036,openstudyval,SDTM,LB,Error,variable_required,LBTESTCD|LBTEST|LBORRES|LBORRESU,Required lab variables missing.,SDTMIG LB domain
+SDTM037,openstudyval,SDTM,EX,Error,variable_required,EXTRT|EXDOSE|EXDOSU|EXSTDTC,Required exposure variables missing.,SDTMIG EX domain
+SDTM038,openstudyval,SDTM,*,Warning,iso8601,DTC,Date/time variable is not valid ISO 8601.,SDTMIG date/time conventions
+SDTM039,openstudyval,SDTM,DM,Error,key_unique,STUDYID+USUBJID,STUDYID + USUBJID is not unique in DM.,SDTMIG DM keys
+SDTM040,openstudyval,SDTM,AE,Error,key_unique,STUDYID+USUBJID+AESEQ,AE key is not unique.,SDTMIG AE keys
+ADAM030,openstudyval,ADaM,ADSL,Error,variable_required,STUDYID|USUBJID|TRT01P|TRT01A|SAFFL,Required ADSL variables missing.,ADaMIG ADSL
+ADAM031,openstudyval,ADaM,ADSL,Warning,codelist,SAFFL=Y|N,SAFFL is not Y or N.,ADaMIG population flags
+ADAM032,openstudyval,ADaM,ADSL,Warning,codelist,ITTFL=Y|N,ITTFL is not Y or N.,ADaMIG population flags
+ADAM033,openstudyval,ADaM,ADSL,Error,key_unique,STUDYID+USUBJID,STUDYID + USUBJID is not unique in ADSL.,ADaMIG ADSL keys
+ADAM034,openstudyval,ADaM,AD*,Error,variable_required,PARAMCD|PARAM,PARAMCD and PARAM are required in analysis datasets.,ADaMIG BDS
+ADAM035,openstudyval,ADaM,AD*,Warning,one_to_one,PARAMCD|PARAM,PARAMCD and PARAM are not one-to-one.,ADaMIG BDS
+ADAM036,openstudyval,ADaM,AD*,Warning,regex,PARAMCD=^[A-Z][A-Z0-9_]{0,7}$,PARAMCD does not match expected pattern.,ADaMIG naming
+ADAM037,openstudyval,ADaM,ADSL,Warning,nonmissing,TRTSDT|TRTEDT,Treatment start or end date is missing when expected.,ADaMIG timing
+SEND030,openstudyval,SEND,DM,Error,variable_required,USUBJID|SEX|SPECIES,Required SEND DM variables missing.,SENDIG
+SEND031,openstudyval,SEND,LB,Error,variable_required,LBTESTCD|LBTEST,Required SEND lab variables missing.,SENDIG
+XPT010,openstudyval,XPT,*,Error,regex,dataset_name=^[A-Z][A-Z0-9]{0,7}$,Dataset name is not 1-8 uppercase characters.,Study Data Technical Conformance Guide
+XPT011,openstudyval,XPT,*,Error,regex,variable_name=^[A-Z][A-Z0-9_]{0,7}$,Variable name is not 1-8 characters.,Study Data Technical Conformance Guide
