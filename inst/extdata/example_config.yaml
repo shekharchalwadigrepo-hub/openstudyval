@@ -1,0 +1,5 @@
+# Example openstudyval configuration (optional future use)
+standard: SDTM
+standard_version: "3.3"
+severity: ["Reject", "Error"]
+# rule_ids: ["SDTM010", "SDTM011"]

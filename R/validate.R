@@ -1,65 +1,66 @@
 #' Validate a study-data folder for an FDA submission package.
 #'
-#' This is the main entry point. It reads datasets, runs XPORT constraints,
-#' standard-specific structural checks, the built-in rule catalog, technical
-#' rejection criteria, and an optional define.xml cross-check.
-#'
-#' The result is not a regulatory certification. FDA and PMDA validation
-#' engines, including Pinnacle 21 Enterprise as used by FDA, remain the
-#' reference for a live submission. Use this report to find issues before
-#' that step.
+#' Enhanced version with version support, rule filtering, and batch options.
 #'
 #' @param path Directory of datasets, or a vector of dataset files.
 #' @param standard `"SDTM"`, `"SEND"`, or `"ADaM"`.
-#' @param define Optional path to define.xml. If `NULL`, a file named
-#'   `define.xml` in `path` is used when present.
-#' @param rules Optional data frame of extra rules from [add_custom_rules()].
-#' @param ct Optional data frame of controlled terminology. Column names are
-#'   variable names; values are permitted terms.
-#' @param version_label Character label stored on the report (IG or engine version).
+#' @param standard_version Optional version string (e.g. `"3.3"`, `"1.2"`).
+#' @param define Optional path to define.xml.
+#' @param rules Optional data frame of extra rules.
+#' @param ct Optional controlled terminology.
+#' @param rule_ids Optional character vector of rule IDs to run (subset).
+#' @param severity Optional character vector of severities to include.
+#' @param version_label Character label stored on the report.
 #' @return An `osv_report` object.
 #' @export
-#' @examples
-#' report <- validate_submission(example_study("sdtm"), standard = "SDTM")
-#' summary(report)
 validate_submission <- function(path,
                                 standard = c("SDTM", "SEND", "ADaM"),
+                                standard_version = NULL,
                                 define = NULL,
                                 rules = NULL,
                                 ct = NULL,
-                                version_label = "openstudyval 0.1.0") {
+                                rule_ids = NULL,
+                                severity = NULL,
+                                version_label = "openstudyval 0.2.0") {
   standard <- match.arg(standard)
   if (length(path) == 1L && dir.exists(path) && is.null(define)) {
     candidate <- file.path(path, "define.xml")
     if (file.exists(candidate)) define <- candidate
   }
   datasets <- read_study_data(path)
-  validate_datasets(datasets, standard = standard, define = define,
-                    rules = rules, ct = ct, version_label = version_label,
+  validate_datasets(datasets, standard = standard,
+                    standard_version = standard_version,
+                    define = define, rules = rules, ct = ct,
+                    rule_ids = rule_ids, severity = severity,
+                    version_label = version_label,
                     path = if (length(path) == 1L) path else NULL)
 }
 
 #' Validate datasets already in memory.
 #'
-#' @param datasets A named list of data frames, as returned by [read_study_data()].
-#' @param standard `"SDTM"`, `"SEND"`, or `"ADaM"`.
-#' @param define Optional define.xml path.
-#' @param rules Optional extra rules.
-#' @param ct Optional controlled terminology.
-#' @param version_label Report label.
-#' @param path Original folder, used only for technical-rejection file checks.
-#' @return An `osv_report` object.
 #' @export
 validate_datasets <- function(datasets,
                               standard = c("SDTM", "SEND", "ADaM"),
+                              standard_version = NULL,
                               define = NULL,
                               rules = NULL,
                               ct = NULL,
-                              version_label = "openstudyval 0.1.0",
+                              rule_ids = NULL,
+                              severity = NULL,
+                              version_label = "openstudyval 0.2.0",
                               path = NULL) {
   standard <- match.arg(standard)
   stopifnot(is.list(datasets), length(datasets) >= 1L)
-  catalog <- osv_load_rules(standard, rules)
+  
+  catalog <- osv_load_rules(standard, rules, standard_version)
+  
+  if (!is.null(rule_ids)) {
+    catalog <- catalog[catalog$rule_id %in% rule_ids, , drop = FALSE]
+  }
+  if (!is.null(severity)) {
+    catalog <- catalog[catalog$severity %in% severity, , drop = FALSE]
+  }
+  
   parts <- list(
     osv_xpt_constraints(datasets),
     osv_structural(datasets, standard),
@@ -93,6 +94,7 @@ validate_datasets <- function(datasets,
       issues = issues,
       domains = domain_summary,
       standard = standard,
+      standard_version = standard_version,
       version_label = version_label,
       define = define,
       n_rules = nrow(catalog),
@@ -102,10 +104,25 @@ validate_datasets <- function(datasets,
   )
 }
 
+#' Batch validate multiple study folders.
+#'
+#' @param paths Character vector of study folder paths.
+#' @param ... Arguments passed to `validate_submission()`.
+#' @return Named list of `osv_report` objects.
+#' @export
+validate_studies <- function(paths, ...) {
+  names(paths) <- basename(paths)
+  lapply(paths, function(p) {
+    tryCatch(validate_submission(p, ...), error = function(e) {
+      structure(list(error = conditionMessage(e), path = p), class = "osv_error")
+    })
+  })
+}
+
 #' @export
 print.osv_report <- function(x, ...) {
   cat("openstudyval report\n")
-  cat("  Standard: ", x$standard, "\n", sep = "")
+  cat("  Standard: ", x$standard, if (!is.null(x$standard_version)) paste0(" (", x$standard_version, ")") else "", "\n", sep = "")
   cat("  Engine:   ", x$version_label, "\n", sep = "")
   cat("  Datasets: ", nrow(x$domains), "\n", sep = "")
   cat("  Issues:   ", nrow(x$issues), "\n", sep = "")
