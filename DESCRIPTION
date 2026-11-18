@@ -1,13 +1,14 @@
 Package: openstudyval
 Title: Open Validator for FDA Study-Data Submissions
-Version: 0.2.1
+Version: 0.2.0
 Authors@R: person("Shekhar Eranna", "Chalwadi", email = "skrchalwadicg@gmail.com", role = c("aut", "cre"))
 Description: Validates clinical and nonclinical study-data packages against
     publicly described FDA technical-rejection criteria, SAS XPORT constraints
     from the Study Data Technical Conformance Guide, and an extensible catalog
-    of SDTM, SEND, and ADaM structural conformance checks. Includes expanded
-    rules, YAML configuration support, batch processing, and Excel/HTML reporting.
-    Independent open-source implementation; not affiliated with Pinnacle 21 or the FDA.
+    of SDTM, SEND, and ADaM structural conformance checks. Supports CSV, RDS,
+    and SAS transport files, optional define.xml checks, and generates HTML,
+    CSV, or Excel reports. Independent open-source implementation; not
+    affiliated with Pinnacle 21, Certara, or the FDA.
 License: MIT + file LICENSE
 Depends: R (>= 4.1.0)
 Imports: stats, tools, utils
